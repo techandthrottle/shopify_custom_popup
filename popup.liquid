@@ -1,0 +1,218 @@
+<div class="custom-popup">
+  <div class="box">
+    <div class="form">
+      <h1>{{ section.settings.popup_header }}</h1>
+      <form>
+        <div class="form-group">
+          <input type="text" placeholder="Email" class="form-control">
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox">
+            Remember Me
+          </label>
+  	 	</div>
+        <button type="button" class="btn">{{ section.settings.btn_text }}</button>
+      </form>
+    </div>
+    <div class="img-area">
+      <div class="img">
+      </div>
+      <h1>YOUR LOGO</h1>
+      <div class="close">&times;</div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  .custom-popup{
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background-color:rgba(0,0,0,0.6);
+	visibility: hidden;
+	opacity: 0;
+	transition: all 1s ease;
+}
+.custom-popup.show{
+	visibility:visible;
+	opacity: 1;
+}
+.custom-popup .box{
+	background-color:#ffffff;
+	width: 750px;
+	position: absolute;
+	left: 50%;
+	top:50%;
+	transform:translate(-50%,-50%);
+	display: flex;
+	flex-wrap: wrap;
+	opacity: 0;
+	margin-left: 50px;
+	transition: all 1s ease;
+
+}
+.custom-popup.show .box{
+	opacity: 1;
+	margin-left: 0;
+}
+.custom-popup .box .img-area{
+	flex:0 0 50%;
+	max-width: 50%;
+	position: relative;
+	overflow: hidden;
+	padding:30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.custom-popup .box .img-area h1{
+	font-size: 30px;
+}
+.custom-popup .box .img-area .img{
+	position: absolute;
+	left:0;
+	top:0;
+	width: 100%;
+	height: 100%;
+	background-image: url('img/bg.jpg');
+	background-size: cover;
+	background-position: center;
+	animation: zoomInOut 7s linear infinite;
+	z-index: -1;
+
+}
+@keyframes zoomInOut{
+	0%,100%{
+		transform: scale(1);
+	}
+	50%{
+		transform: scale(1.1);
+	}
+}
+.custom-popup .box .form{
+	flex:0 0 50%;
+	max-width: 50%;
+	padding:40px 30px;
+}
+
+.custom-popup .box .form h1{
+	color:#000000;
+	font-size: 30px;
+	margin:0 0 30px;
+}
+.custom-popup .box .form .form-control{
+	height: 45px;
+	margin-bottom: 30px;
+	width: 100%;
+	border:none;
+	border-bottom:1px solid #cccccc;
+	font-size: 15px;
+	color:#000000;
+}
+.custom-popup .box .form .form-control:focus{
+	outline: none;
+}
+.custom-popup .box .form label{
+	font-size: 15px;
+	color:#555555;
+}
+.custom-popup .box .form .btn{
+	width: 100%;
+  background-color: {{ section.settings.btn_color }};
+	margin-top:40px;
+	height: 45px;
+	border:none;
+	border-radius: 25px;
+	font-size: 15px;
+	text-transform: uppercase;
+	color:#ffffff;
+	cursor: pointer;
+}
+.custom-popup .box .form .btn:focus{
+	outline: none;
+}
+
+.custom-popup .box .img-area .close{
+	position: absolute;
+	right: 10px;
+	top:0px;
+	font-size: 30px;
+	cursor: pointer;
+}
+
+/*responsive*/
+@media(max-width: 767px){
+	.custom-popup .box{
+		width: calc(100% - 30px);
+	}
+	.custom-popup .box .img-area{
+		display: none;
+	}
+	.custom-popup .box .form{
+		flex: 0 0 100%;
+        max-width: 100%;
+	}
+}
+</style>
+
+<script>
+const loginPopup = document.querySelector(".custom-popup");
+const close = document.querySelector(".close");
+
+
+  window.addEventListener("load",function(){
+ 
+   showPopup();
+   // setTimeout(function(){
+   //   loginPopup.classList.add("show");
+   // },5000)
+
+  })
+
+  function showPopup(){
+        const timeLimit = 5 // seconds;
+        let i=0;
+        const timer = setInterval(function(){
+         i++;
+         if(i == timeLimit){
+          clearInterval(timer);
+          loginPopup.classList.add("show");
+         } 
+//          console.log(i)
+        },1000);
+  }
+
+
+  close.addEventListener("click",function(){
+    loginPopup.classList.remove("show");
+  })  
+  
+</script>
+
+{% schema %}
+{
+ "name": {
+	"en": "Custom Popup"
+ },
+ "settings": [{
+ 	"type": "text",
+ 	"id": "popup_header",
+ 	"label": "Header"
+ },
+ {
+	"type": "text",
+	"id": "btn_text",
+	"label": "Button Label"
+ },
+ {
+	"type": "color",
+	"id": "btn_color",
+	"label": "Button Color"
+ }
+]
+}
+{% endschema %}
